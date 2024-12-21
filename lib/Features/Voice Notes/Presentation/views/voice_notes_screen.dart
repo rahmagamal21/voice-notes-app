@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:voice_notes_app/Features/Voice%20Notes/Presentation/views/widgets/notes_list_item.dart';
+
+import '../controller/voice_note/voice_note_bloc.dart';
+import 'widgets/bottom_sheet.dart';
 
 class VoiceNotesScreen extends StatelessWidget {
   const VoiceNotesScreen({super.key});
@@ -44,7 +48,17 @@ class VoiceNotesScreen extends StatelessWidget {
           shrinkWrap: true,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            context.read<VoiceNoteBloc>().add(const StartRecording());
+            showModalBottomSheet(
+              context: context,
+              isDismissible: true,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              builder: (_) => const BottomSheetContent(),
+            );
+          },
           backgroundColor: const Color(0xffF48FB1),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
