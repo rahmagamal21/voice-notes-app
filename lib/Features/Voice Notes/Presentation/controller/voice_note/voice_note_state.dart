@@ -6,11 +6,13 @@ class VoiceNoteState with _$VoiceNoteState {
     required bool isRecording,
     required bool isPaused,
     required int recordingDuration,
+    required List<VoiceNote> notes,
   }) = _VoiceNoteState;
 
   factory VoiceNoteState.initial() => const VoiceNoteState(
         isRecording: false,
         isPaused: false,
         recordingDuration: 0,
+        notes: [],
       );
 }

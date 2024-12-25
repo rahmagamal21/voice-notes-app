@@ -11,12 +11,6 @@ class VoiceNotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, String>> notes = [
-      {"title": "Note1", "date": "14 Dec 2024"},
-      {"title": "Note2", "date": "15 Dec 2024"},
-      {"title": "Note3", "date": "16 Dec 2024"},
-      {"title": "Note4", "date": "17 Dec 2024"}
-    ];
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -31,21 +25,33 @@ class VoiceNotesScreen extends StatelessWidget {
           centerTitle: true,
           toolbarHeight: 100.h,
         ),
-        body: ListView.separated(
-          itemBuilder: (context, index) {
-            return NotesListItem(
-              title: notes[index]["title"] ?? '',
-              date: notes[index]["date"] ?? '',
-            );
+        body: BlocBuilder<VoiceNoteBloc, VoiceNoteState>(
+          builder: (context, state) {
+            final notes = state.notes;
+            if (notes.isEmpty) {
+              return const Center(
+                child: Text('Your Notes appears here!'),
+              );
+            } else {
+              return ListView.separated(
+                itemBuilder: (context, index) {
+                  final note = notes[index];
+                  return NotesListItem(
+                    title: note.title,
+                    date: note.recordedDate.toLocal().toString(),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    height: 15.h,
+                  );
+                },
+                itemCount: notes.length,
+                reverse: true,
+                shrinkWrap: true,
+              );
+            }
           },
-          separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(
-              height: 15.h,
-            );
-          },
-          itemCount: notes.length,
-          reverse: true,
-          shrinkWrap: true,
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {

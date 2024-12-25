@@ -19,6 +19,7 @@ mixin _$VoiceNoteState {
   bool get isRecording => throw _privateConstructorUsedError;
   bool get isPaused => throw _privateConstructorUsedError;
   int get recordingDuration => throw _privateConstructorUsedError;
+  List<VoiceNote> get notes => throw _privateConstructorUsedError;
 
   /// Create a copy of VoiceNoteState
   /// with the given fields replaced by the non-null parameter values.
@@ -33,7 +34,11 @@ abstract class $VoiceNoteStateCopyWith<$Res> {
           VoiceNoteState value, $Res Function(VoiceNoteState) then) =
       _$VoiceNoteStateCopyWithImpl<$Res, VoiceNoteState>;
   @useResult
-  $Res call({bool isRecording, bool isPaused, int recordingDuration});
+  $Res call(
+      {bool isRecording,
+      bool isPaused,
+      int recordingDuration,
+      List<VoiceNote> notes});
 }
 
 /// @nodoc
@@ -54,6 +59,7 @@ class _$VoiceNoteStateCopyWithImpl<$Res, $Val extends VoiceNoteState>
     Object? isRecording = null,
     Object? isPaused = null,
     Object? recordingDuration = null,
+    Object? notes = null,
   }) {
     return _then(_value.copyWith(
       isRecording: null == isRecording
@@ -68,6 +74,10 @@ class _$VoiceNoteStateCopyWithImpl<$Res, $Val extends VoiceNoteState>
           ? _value.recordingDuration
           : recordingDuration // ignore: cast_nullable_to_non_nullable
               as int,
+      notes: null == notes
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as List<VoiceNote>,
     ) as $Val);
   }
 }
@@ -80,7 +90,11 @@ abstract class _$$VoiceNoteStateImplCopyWith<$Res>
       __$$VoiceNoteStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isRecording, bool isPaused, int recordingDuration});
+  $Res call(
+      {bool isRecording,
+      bool isPaused,
+      int recordingDuration,
+      List<VoiceNote> notes});
 }
 
 /// @nodoc
@@ -99,6 +113,7 @@ class __$$VoiceNoteStateImplCopyWithImpl<$Res>
     Object? isRecording = null,
     Object? isPaused = null,
     Object? recordingDuration = null,
+    Object? notes = null,
   }) {
     return _then(_$VoiceNoteStateImpl(
       isRecording: null == isRecording
@@ -113,6 +128,10 @@ class __$$VoiceNoteStateImplCopyWithImpl<$Res>
           ? _value.recordingDuration
           : recordingDuration // ignore: cast_nullable_to_non_nullable
               as int,
+      notes: null == notes
+          ? _value._notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as List<VoiceNote>,
     ));
   }
 }
@@ -123,7 +142,9 @@ class _$VoiceNoteStateImpl implements _VoiceNoteState {
   const _$VoiceNoteStateImpl(
       {required this.isRecording,
       required this.isPaused,
-      required this.recordingDuration});
+      required this.recordingDuration,
+      required final List<VoiceNote> notes})
+      : _notes = notes;
 
   @override
   final bool isRecording;
@@ -131,10 +152,17 @@ class _$VoiceNoteStateImpl implements _VoiceNoteState {
   final bool isPaused;
   @override
   final int recordingDuration;
+  final List<VoiceNote> _notes;
+  @override
+  List<VoiceNote> get notes {
+    if (_notes is EqualUnmodifiableListView) return _notes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_notes);
+  }
 
   @override
   String toString() {
-    return 'VoiceNoteState(isRecording: $isRecording, isPaused: $isPaused, recordingDuration: $recordingDuration)';
+    return 'VoiceNoteState(isRecording: $isRecording, isPaused: $isPaused, recordingDuration: $recordingDuration, notes: $notes)';
   }
 
   @override
@@ -147,12 +175,13 @@ class _$VoiceNoteStateImpl implements _VoiceNoteState {
             (identical(other.isPaused, isPaused) ||
                 other.isPaused == isPaused) &&
             (identical(other.recordingDuration, recordingDuration) ||
-                other.recordingDuration == recordingDuration));
+                other.recordingDuration == recordingDuration) &&
+            const DeepCollectionEquality().equals(other._notes, _notes));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, isRecording, isPaused, recordingDuration);
+  int get hashCode => Object.hash(runtimeType, isRecording, isPaused,
+      recordingDuration, const DeepCollectionEquality().hash(_notes));
 
   /// Create a copy of VoiceNoteState
   /// with the given fields replaced by the non-null parameter values.
@@ -168,7 +197,8 @@ abstract class _VoiceNoteState implements VoiceNoteState {
   const factory _VoiceNoteState(
       {required final bool isRecording,
       required final bool isPaused,
-      required final int recordingDuration}) = _$VoiceNoteStateImpl;
+      required final int recordingDuration,
+      required final List<VoiceNote> notes}) = _$VoiceNoteStateImpl;
 
   @override
   bool get isRecording;
@@ -176,6 +206,8 @@ abstract class _VoiceNoteState implements VoiceNoteState {
   bool get isPaused;
   @override
   int get recordingDuration;
+  @override
+  List<VoiceNote> get notes;
 
   /// Create a copy of VoiceNoteState
   /// with the given fields replaced by the non-null parameter values.
@@ -193,6 +225,9 @@ mixin _$VoiceNoteEvent {
     required TResult Function() pauseRecording,
     required TResult Function() stopRecording,
     required TResult Function() updateDuration,
+    required TResult Function(String title) saveVoiceNote,
+    required TResult Function(String id) deleteVoiceNote,
+    required TResult Function() fetchVoiceNotes,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -201,6 +236,9 @@ mixin _$VoiceNoteEvent {
     TResult? Function()? pauseRecording,
     TResult? Function()? stopRecording,
     TResult? Function()? updateDuration,
+    TResult? Function(String title)? saveVoiceNote,
+    TResult? Function(String id)? deleteVoiceNote,
+    TResult? Function()? fetchVoiceNotes,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -209,6 +247,9 @@ mixin _$VoiceNoteEvent {
     TResult Function()? pauseRecording,
     TResult Function()? stopRecording,
     TResult Function()? updateDuration,
+    TResult Function(String title)? saveVoiceNote,
+    TResult Function(String id)? deleteVoiceNote,
+    TResult Function()? fetchVoiceNotes,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -218,6 +259,9 @@ mixin _$VoiceNoteEvent {
     required TResult Function(PauseRecording value) pauseRecording,
     required TResult Function(StopRecording value) stopRecording,
     required TResult Function(UpdateDuration value) updateDuration,
+    required TResult Function(SaveVoiceNote value) saveVoiceNote,
+    required TResult Function(DeleteVoiceNote value) deleteVoiceNote,
+    required TResult Function(FetchVoiceNotes value) fetchVoiceNotes,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -226,6 +270,9 @@ mixin _$VoiceNoteEvent {
     TResult? Function(PauseRecording value)? pauseRecording,
     TResult? Function(StopRecording value)? stopRecording,
     TResult? Function(UpdateDuration value)? updateDuration,
+    TResult? Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult? Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult? Function(FetchVoiceNotes value)? fetchVoiceNotes,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -234,6 +281,9 @@ mixin _$VoiceNoteEvent {
     TResult Function(PauseRecording value)? pauseRecording,
     TResult Function(StopRecording value)? stopRecording,
     TResult Function(UpdateDuration value)? updateDuration,
+    TResult Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult Function(FetchVoiceNotes value)? fetchVoiceNotes,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -305,6 +355,9 @@ class _$StartRecordingImpl implements StartRecording {
     required TResult Function() pauseRecording,
     required TResult Function() stopRecording,
     required TResult Function() updateDuration,
+    required TResult Function(String title) saveVoiceNote,
+    required TResult Function(String id) deleteVoiceNote,
+    required TResult Function() fetchVoiceNotes,
   }) {
     return startRecording();
   }
@@ -316,6 +369,9 @@ class _$StartRecordingImpl implements StartRecording {
     TResult? Function()? pauseRecording,
     TResult? Function()? stopRecording,
     TResult? Function()? updateDuration,
+    TResult? Function(String title)? saveVoiceNote,
+    TResult? Function(String id)? deleteVoiceNote,
+    TResult? Function()? fetchVoiceNotes,
   }) {
     return startRecording?.call();
   }
@@ -327,6 +383,9 @@ class _$StartRecordingImpl implements StartRecording {
     TResult Function()? pauseRecording,
     TResult Function()? stopRecording,
     TResult Function()? updateDuration,
+    TResult Function(String title)? saveVoiceNote,
+    TResult Function(String id)? deleteVoiceNote,
+    TResult Function()? fetchVoiceNotes,
     required TResult orElse(),
   }) {
     if (startRecording != null) {
@@ -342,6 +401,9 @@ class _$StartRecordingImpl implements StartRecording {
     required TResult Function(PauseRecording value) pauseRecording,
     required TResult Function(StopRecording value) stopRecording,
     required TResult Function(UpdateDuration value) updateDuration,
+    required TResult Function(SaveVoiceNote value) saveVoiceNote,
+    required TResult Function(DeleteVoiceNote value) deleteVoiceNote,
+    required TResult Function(FetchVoiceNotes value) fetchVoiceNotes,
   }) {
     return startRecording(this);
   }
@@ -353,6 +415,9 @@ class _$StartRecordingImpl implements StartRecording {
     TResult? Function(PauseRecording value)? pauseRecording,
     TResult? Function(StopRecording value)? stopRecording,
     TResult? Function(UpdateDuration value)? updateDuration,
+    TResult? Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult? Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult? Function(FetchVoiceNotes value)? fetchVoiceNotes,
   }) {
     return startRecording?.call(this);
   }
@@ -364,6 +429,9 @@ class _$StartRecordingImpl implements StartRecording {
     TResult Function(PauseRecording value)? pauseRecording,
     TResult Function(StopRecording value)? stopRecording,
     TResult Function(UpdateDuration value)? updateDuration,
+    TResult Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult Function(FetchVoiceNotes value)? fetchVoiceNotes,
     required TResult orElse(),
   }) {
     if (startRecording != null) {
@@ -422,6 +490,9 @@ class _$PauseRecordingImpl implements PauseRecording {
     required TResult Function() pauseRecording,
     required TResult Function() stopRecording,
     required TResult Function() updateDuration,
+    required TResult Function(String title) saveVoiceNote,
+    required TResult Function(String id) deleteVoiceNote,
+    required TResult Function() fetchVoiceNotes,
   }) {
     return pauseRecording();
   }
@@ -433,6 +504,9 @@ class _$PauseRecordingImpl implements PauseRecording {
     TResult? Function()? pauseRecording,
     TResult? Function()? stopRecording,
     TResult? Function()? updateDuration,
+    TResult? Function(String title)? saveVoiceNote,
+    TResult? Function(String id)? deleteVoiceNote,
+    TResult? Function()? fetchVoiceNotes,
   }) {
     return pauseRecording?.call();
   }
@@ -444,6 +518,9 @@ class _$PauseRecordingImpl implements PauseRecording {
     TResult Function()? pauseRecording,
     TResult Function()? stopRecording,
     TResult Function()? updateDuration,
+    TResult Function(String title)? saveVoiceNote,
+    TResult Function(String id)? deleteVoiceNote,
+    TResult Function()? fetchVoiceNotes,
     required TResult orElse(),
   }) {
     if (pauseRecording != null) {
@@ -459,6 +536,9 @@ class _$PauseRecordingImpl implements PauseRecording {
     required TResult Function(PauseRecording value) pauseRecording,
     required TResult Function(StopRecording value) stopRecording,
     required TResult Function(UpdateDuration value) updateDuration,
+    required TResult Function(SaveVoiceNote value) saveVoiceNote,
+    required TResult Function(DeleteVoiceNote value) deleteVoiceNote,
+    required TResult Function(FetchVoiceNotes value) fetchVoiceNotes,
   }) {
     return pauseRecording(this);
   }
@@ -470,6 +550,9 @@ class _$PauseRecordingImpl implements PauseRecording {
     TResult? Function(PauseRecording value)? pauseRecording,
     TResult? Function(StopRecording value)? stopRecording,
     TResult? Function(UpdateDuration value)? updateDuration,
+    TResult? Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult? Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult? Function(FetchVoiceNotes value)? fetchVoiceNotes,
   }) {
     return pauseRecording?.call(this);
   }
@@ -481,6 +564,9 @@ class _$PauseRecordingImpl implements PauseRecording {
     TResult Function(PauseRecording value)? pauseRecording,
     TResult Function(StopRecording value)? stopRecording,
     TResult Function(UpdateDuration value)? updateDuration,
+    TResult Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult Function(FetchVoiceNotes value)? fetchVoiceNotes,
     required TResult orElse(),
   }) {
     if (pauseRecording != null) {
@@ -539,6 +625,9 @@ class _$StopRecordingImpl implements StopRecording {
     required TResult Function() pauseRecording,
     required TResult Function() stopRecording,
     required TResult Function() updateDuration,
+    required TResult Function(String title) saveVoiceNote,
+    required TResult Function(String id) deleteVoiceNote,
+    required TResult Function() fetchVoiceNotes,
   }) {
     return stopRecording();
   }
@@ -550,6 +639,9 @@ class _$StopRecordingImpl implements StopRecording {
     TResult? Function()? pauseRecording,
     TResult? Function()? stopRecording,
     TResult? Function()? updateDuration,
+    TResult? Function(String title)? saveVoiceNote,
+    TResult? Function(String id)? deleteVoiceNote,
+    TResult? Function()? fetchVoiceNotes,
   }) {
     return stopRecording?.call();
   }
@@ -561,6 +653,9 @@ class _$StopRecordingImpl implements StopRecording {
     TResult Function()? pauseRecording,
     TResult Function()? stopRecording,
     TResult Function()? updateDuration,
+    TResult Function(String title)? saveVoiceNote,
+    TResult Function(String id)? deleteVoiceNote,
+    TResult Function()? fetchVoiceNotes,
     required TResult orElse(),
   }) {
     if (stopRecording != null) {
@@ -576,6 +671,9 @@ class _$StopRecordingImpl implements StopRecording {
     required TResult Function(PauseRecording value) pauseRecording,
     required TResult Function(StopRecording value) stopRecording,
     required TResult Function(UpdateDuration value) updateDuration,
+    required TResult Function(SaveVoiceNote value) saveVoiceNote,
+    required TResult Function(DeleteVoiceNote value) deleteVoiceNote,
+    required TResult Function(FetchVoiceNotes value) fetchVoiceNotes,
   }) {
     return stopRecording(this);
   }
@@ -587,6 +685,9 @@ class _$StopRecordingImpl implements StopRecording {
     TResult? Function(PauseRecording value)? pauseRecording,
     TResult? Function(StopRecording value)? stopRecording,
     TResult? Function(UpdateDuration value)? updateDuration,
+    TResult? Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult? Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult? Function(FetchVoiceNotes value)? fetchVoiceNotes,
   }) {
     return stopRecording?.call(this);
   }
@@ -598,6 +699,9 @@ class _$StopRecordingImpl implements StopRecording {
     TResult Function(PauseRecording value)? pauseRecording,
     TResult Function(StopRecording value)? stopRecording,
     TResult Function(UpdateDuration value)? updateDuration,
+    TResult Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult Function(FetchVoiceNotes value)? fetchVoiceNotes,
     required TResult orElse(),
   }) {
     if (stopRecording != null) {
@@ -656,6 +760,9 @@ class _$UpdateDurationImpl implements UpdateDuration {
     required TResult Function() pauseRecording,
     required TResult Function() stopRecording,
     required TResult Function() updateDuration,
+    required TResult Function(String title) saveVoiceNote,
+    required TResult Function(String id) deleteVoiceNote,
+    required TResult Function() fetchVoiceNotes,
   }) {
     return updateDuration();
   }
@@ -667,6 +774,9 @@ class _$UpdateDurationImpl implements UpdateDuration {
     TResult? Function()? pauseRecording,
     TResult? Function()? stopRecording,
     TResult? Function()? updateDuration,
+    TResult? Function(String title)? saveVoiceNote,
+    TResult? Function(String id)? deleteVoiceNote,
+    TResult? Function()? fetchVoiceNotes,
   }) {
     return updateDuration?.call();
   }
@@ -678,6 +788,9 @@ class _$UpdateDurationImpl implements UpdateDuration {
     TResult Function()? pauseRecording,
     TResult Function()? stopRecording,
     TResult Function()? updateDuration,
+    TResult Function(String title)? saveVoiceNote,
+    TResult Function(String id)? deleteVoiceNote,
+    TResult Function()? fetchVoiceNotes,
     required TResult orElse(),
   }) {
     if (updateDuration != null) {
@@ -693,6 +806,9 @@ class _$UpdateDurationImpl implements UpdateDuration {
     required TResult Function(PauseRecording value) pauseRecording,
     required TResult Function(StopRecording value) stopRecording,
     required TResult Function(UpdateDuration value) updateDuration,
+    required TResult Function(SaveVoiceNote value) saveVoiceNote,
+    required TResult Function(DeleteVoiceNote value) deleteVoiceNote,
+    required TResult Function(FetchVoiceNotes value) fetchVoiceNotes,
   }) {
     return updateDuration(this);
   }
@@ -704,6 +820,9 @@ class _$UpdateDurationImpl implements UpdateDuration {
     TResult? Function(PauseRecording value)? pauseRecording,
     TResult? Function(StopRecording value)? stopRecording,
     TResult? Function(UpdateDuration value)? updateDuration,
+    TResult? Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult? Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult? Function(FetchVoiceNotes value)? fetchVoiceNotes,
   }) {
     return updateDuration?.call(this);
   }
@@ -715,6 +834,9 @@ class _$UpdateDurationImpl implements UpdateDuration {
     TResult Function(PauseRecording value)? pauseRecording,
     TResult Function(StopRecording value)? stopRecording,
     TResult Function(UpdateDuration value)? updateDuration,
+    TResult Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult Function(FetchVoiceNotes value)? fetchVoiceNotes,
     required TResult orElse(),
   }) {
     if (updateDuration != null) {
@@ -726,4 +848,480 @@ class _$UpdateDurationImpl implements UpdateDuration {
 
 abstract class UpdateDuration implements VoiceNoteEvent {
   const factory UpdateDuration() = _$UpdateDurationImpl;
+}
+
+/// @nodoc
+abstract class _$$SaveVoiceNoteImplCopyWith<$Res> {
+  factory _$$SaveVoiceNoteImplCopyWith(
+          _$SaveVoiceNoteImpl value, $Res Function(_$SaveVoiceNoteImpl) then) =
+      __$$SaveVoiceNoteImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String title});
+}
+
+/// @nodoc
+class __$$SaveVoiceNoteImplCopyWithImpl<$Res>
+    extends _$VoiceNoteEventCopyWithImpl<$Res, _$SaveVoiceNoteImpl>
+    implements _$$SaveVoiceNoteImplCopyWith<$Res> {
+  __$$SaveVoiceNoteImplCopyWithImpl(
+      _$SaveVoiceNoteImpl _value, $Res Function(_$SaveVoiceNoteImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of VoiceNoteEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? title = null,
+  }) {
+    return _then(_$SaveVoiceNoteImpl(
+      null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SaveVoiceNoteImpl implements SaveVoiceNote {
+  const _$SaveVoiceNoteImpl(this.title);
+
+  @override
+  final String title;
+
+  @override
+  String toString() {
+    return 'VoiceNoteEvent.saveVoiceNote(title: $title)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SaveVoiceNoteImpl &&
+            (identical(other.title, title) || other.title == title));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, title);
+
+  /// Create a copy of VoiceNoteEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SaveVoiceNoteImplCopyWith<_$SaveVoiceNoteImpl> get copyWith =>
+      __$$SaveVoiceNoteImplCopyWithImpl<_$SaveVoiceNoteImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() startRecording,
+    required TResult Function() pauseRecording,
+    required TResult Function() stopRecording,
+    required TResult Function() updateDuration,
+    required TResult Function(String title) saveVoiceNote,
+    required TResult Function(String id) deleteVoiceNote,
+    required TResult Function() fetchVoiceNotes,
+  }) {
+    return saveVoiceNote(title);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? startRecording,
+    TResult? Function()? pauseRecording,
+    TResult? Function()? stopRecording,
+    TResult? Function()? updateDuration,
+    TResult? Function(String title)? saveVoiceNote,
+    TResult? Function(String id)? deleteVoiceNote,
+    TResult? Function()? fetchVoiceNotes,
+  }) {
+    return saveVoiceNote?.call(title);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? startRecording,
+    TResult Function()? pauseRecording,
+    TResult Function()? stopRecording,
+    TResult Function()? updateDuration,
+    TResult Function(String title)? saveVoiceNote,
+    TResult Function(String id)? deleteVoiceNote,
+    TResult Function()? fetchVoiceNotes,
+    required TResult orElse(),
+  }) {
+    if (saveVoiceNote != null) {
+      return saveVoiceNote(title);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(StartRecording value) startRecording,
+    required TResult Function(PauseRecording value) pauseRecording,
+    required TResult Function(StopRecording value) stopRecording,
+    required TResult Function(UpdateDuration value) updateDuration,
+    required TResult Function(SaveVoiceNote value) saveVoiceNote,
+    required TResult Function(DeleteVoiceNote value) deleteVoiceNote,
+    required TResult Function(FetchVoiceNotes value) fetchVoiceNotes,
+  }) {
+    return saveVoiceNote(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(StartRecording value)? startRecording,
+    TResult? Function(PauseRecording value)? pauseRecording,
+    TResult? Function(StopRecording value)? stopRecording,
+    TResult? Function(UpdateDuration value)? updateDuration,
+    TResult? Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult? Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult? Function(FetchVoiceNotes value)? fetchVoiceNotes,
+  }) {
+    return saveVoiceNote?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(StartRecording value)? startRecording,
+    TResult Function(PauseRecording value)? pauseRecording,
+    TResult Function(StopRecording value)? stopRecording,
+    TResult Function(UpdateDuration value)? updateDuration,
+    TResult Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult Function(FetchVoiceNotes value)? fetchVoiceNotes,
+    required TResult orElse(),
+  }) {
+    if (saveVoiceNote != null) {
+      return saveVoiceNote(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SaveVoiceNote implements VoiceNoteEvent {
+  const factory SaveVoiceNote(final String title) = _$SaveVoiceNoteImpl;
+
+  String get title;
+
+  /// Create a copy of VoiceNoteEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SaveVoiceNoteImplCopyWith<_$SaveVoiceNoteImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DeleteVoiceNoteImplCopyWith<$Res> {
+  factory _$$DeleteVoiceNoteImplCopyWith(_$DeleteVoiceNoteImpl value,
+          $Res Function(_$DeleteVoiceNoteImpl) then) =
+      __$$DeleteVoiceNoteImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String id});
+}
+
+/// @nodoc
+class __$$DeleteVoiceNoteImplCopyWithImpl<$Res>
+    extends _$VoiceNoteEventCopyWithImpl<$Res, _$DeleteVoiceNoteImpl>
+    implements _$$DeleteVoiceNoteImplCopyWith<$Res> {
+  __$$DeleteVoiceNoteImplCopyWithImpl(
+      _$DeleteVoiceNoteImpl _value, $Res Function(_$DeleteVoiceNoteImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of VoiceNoteEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_$DeleteVoiceNoteImpl(
+      null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DeleteVoiceNoteImpl implements DeleteVoiceNote {
+  const _$DeleteVoiceNoteImpl(this.id);
+
+  @override
+  final String id;
+
+  @override
+  String toString() {
+    return 'VoiceNoteEvent.deleteVoiceNote(id: $id)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DeleteVoiceNoteImpl &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+
+  /// Create a copy of VoiceNoteEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DeleteVoiceNoteImplCopyWith<_$DeleteVoiceNoteImpl> get copyWith =>
+      __$$DeleteVoiceNoteImplCopyWithImpl<_$DeleteVoiceNoteImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() startRecording,
+    required TResult Function() pauseRecording,
+    required TResult Function() stopRecording,
+    required TResult Function() updateDuration,
+    required TResult Function(String title) saveVoiceNote,
+    required TResult Function(String id) deleteVoiceNote,
+    required TResult Function() fetchVoiceNotes,
+  }) {
+    return deleteVoiceNote(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? startRecording,
+    TResult? Function()? pauseRecording,
+    TResult? Function()? stopRecording,
+    TResult? Function()? updateDuration,
+    TResult? Function(String title)? saveVoiceNote,
+    TResult? Function(String id)? deleteVoiceNote,
+    TResult? Function()? fetchVoiceNotes,
+  }) {
+    return deleteVoiceNote?.call(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? startRecording,
+    TResult Function()? pauseRecording,
+    TResult Function()? stopRecording,
+    TResult Function()? updateDuration,
+    TResult Function(String title)? saveVoiceNote,
+    TResult Function(String id)? deleteVoiceNote,
+    TResult Function()? fetchVoiceNotes,
+    required TResult orElse(),
+  }) {
+    if (deleteVoiceNote != null) {
+      return deleteVoiceNote(id);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(StartRecording value) startRecording,
+    required TResult Function(PauseRecording value) pauseRecording,
+    required TResult Function(StopRecording value) stopRecording,
+    required TResult Function(UpdateDuration value) updateDuration,
+    required TResult Function(SaveVoiceNote value) saveVoiceNote,
+    required TResult Function(DeleteVoiceNote value) deleteVoiceNote,
+    required TResult Function(FetchVoiceNotes value) fetchVoiceNotes,
+  }) {
+    return deleteVoiceNote(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(StartRecording value)? startRecording,
+    TResult? Function(PauseRecording value)? pauseRecording,
+    TResult? Function(StopRecording value)? stopRecording,
+    TResult? Function(UpdateDuration value)? updateDuration,
+    TResult? Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult? Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult? Function(FetchVoiceNotes value)? fetchVoiceNotes,
+  }) {
+    return deleteVoiceNote?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(StartRecording value)? startRecording,
+    TResult Function(PauseRecording value)? pauseRecording,
+    TResult Function(StopRecording value)? stopRecording,
+    TResult Function(UpdateDuration value)? updateDuration,
+    TResult Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult Function(FetchVoiceNotes value)? fetchVoiceNotes,
+    required TResult orElse(),
+  }) {
+    if (deleteVoiceNote != null) {
+      return deleteVoiceNote(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DeleteVoiceNote implements VoiceNoteEvent {
+  const factory DeleteVoiceNote(final String id) = _$DeleteVoiceNoteImpl;
+
+  String get id;
+
+  /// Create a copy of VoiceNoteEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DeleteVoiceNoteImplCopyWith<_$DeleteVoiceNoteImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FetchVoiceNotesImplCopyWith<$Res> {
+  factory _$$FetchVoiceNotesImplCopyWith(_$FetchVoiceNotesImpl value,
+          $Res Function(_$FetchVoiceNotesImpl) then) =
+      __$$FetchVoiceNotesImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$FetchVoiceNotesImplCopyWithImpl<$Res>
+    extends _$VoiceNoteEventCopyWithImpl<$Res, _$FetchVoiceNotesImpl>
+    implements _$$FetchVoiceNotesImplCopyWith<$Res> {
+  __$$FetchVoiceNotesImplCopyWithImpl(
+      _$FetchVoiceNotesImpl _value, $Res Function(_$FetchVoiceNotesImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of VoiceNoteEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$FetchVoiceNotesImpl implements FetchVoiceNotes {
+  const _$FetchVoiceNotesImpl();
+
+  @override
+  String toString() {
+    return 'VoiceNoteEvent.fetchVoiceNotes()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$FetchVoiceNotesImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() startRecording,
+    required TResult Function() pauseRecording,
+    required TResult Function() stopRecording,
+    required TResult Function() updateDuration,
+    required TResult Function(String title) saveVoiceNote,
+    required TResult Function(String id) deleteVoiceNote,
+    required TResult Function() fetchVoiceNotes,
+  }) {
+    return fetchVoiceNotes();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? startRecording,
+    TResult? Function()? pauseRecording,
+    TResult? Function()? stopRecording,
+    TResult? Function()? updateDuration,
+    TResult? Function(String title)? saveVoiceNote,
+    TResult? Function(String id)? deleteVoiceNote,
+    TResult? Function()? fetchVoiceNotes,
+  }) {
+    return fetchVoiceNotes?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? startRecording,
+    TResult Function()? pauseRecording,
+    TResult Function()? stopRecording,
+    TResult Function()? updateDuration,
+    TResult Function(String title)? saveVoiceNote,
+    TResult Function(String id)? deleteVoiceNote,
+    TResult Function()? fetchVoiceNotes,
+    required TResult orElse(),
+  }) {
+    if (fetchVoiceNotes != null) {
+      return fetchVoiceNotes();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(StartRecording value) startRecording,
+    required TResult Function(PauseRecording value) pauseRecording,
+    required TResult Function(StopRecording value) stopRecording,
+    required TResult Function(UpdateDuration value) updateDuration,
+    required TResult Function(SaveVoiceNote value) saveVoiceNote,
+    required TResult Function(DeleteVoiceNote value) deleteVoiceNote,
+    required TResult Function(FetchVoiceNotes value) fetchVoiceNotes,
+  }) {
+    return fetchVoiceNotes(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(StartRecording value)? startRecording,
+    TResult? Function(PauseRecording value)? pauseRecording,
+    TResult? Function(StopRecording value)? stopRecording,
+    TResult? Function(UpdateDuration value)? updateDuration,
+    TResult? Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult? Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult? Function(FetchVoiceNotes value)? fetchVoiceNotes,
+  }) {
+    return fetchVoiceNotes?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(StartRecording value)? startRecording,
+    TResult Function(PauseRecording value)? pauseRecording,
+    TResult Function(StopRecording value)? stopRecording,
+    TResult Function(UpdateDuration value)? updateDuration,
+    TResult Function(SaveVoiceNote value)? saveVoiceNote,
+    TResult Function(DeleteVoiceNote value)? deleteVoiceNote,
+    TResult Function(FetchVoiceNotes value)? fetchVoiceNotes,
+    required TResult orElse(),
+  }) {
+    if (fetchVoiceNotes != null) {
+      return fetchVoiceNotes(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FetchVoiceNotes implements VoiceNoteEvent {
+  const factory FetchVoiceNotes() = _$FetchVoiceNotesImpl;
 }

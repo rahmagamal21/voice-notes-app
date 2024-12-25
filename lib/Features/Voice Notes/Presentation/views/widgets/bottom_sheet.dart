@@ -56,7 +56,43 @@ class BottomSheetContent extends StatelessWidget {
                   ),
                   ElevatedButton.icon(
                     onPressed: state.isRecording
-                        ? () => bloc.add(const StopRecording())
+                        ? () {
+                            bloc.add(const StopRecording());
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: const Text('Save Recording?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text(
+                                      'Discard',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      final bloc =
+                                          context.read<VoiceNoteBloc>();
+                                      bloc.add(SaveVoiceNote(
+                                          'Note ${bloc.state.notes.length + 1}'));
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text(
+                                      'Save',
+                                      style: TextStyle(
+                                        color: Color(0xff1E88E5),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                         : null,
                     icon: const Icon(Icons.stop),
                     label: const Text('Stop'),

@@ -4,14 +4,18 @@ import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../Domain/voice_note_entity.dart';
+import '../../../Domain/voice_note_repository.dart';
+
 part 'voice_note_state.dart';
 part 'voice_note_event.dart';
 part 'voice_note_bloc.freezed.dart';
 
 class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
   final RecorderController recorderController = RecorderController();
+  final VoiceNoteRepository repository;
   Timer? timer;
-  VoiceNoteBloc() : super(VoiceNoteState.initial()) {
+  VoiceNoteBloc(this.repository) : super(VoiceNoteState.initial()) {
     on<StartRecording>((event, emit) {
       recorderController.reset();
       recorderController.record();
@@ -21,7 +25,9 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
       });
     });
     on<UpdateDuration>((event, emit) {
-      emit(state.copyWith(recordingDuration: state.recordingDuration + 1));
+      if (!state.isPaused) {
+        emit(state.copyWith(recordingDuration: state.recordingDuration + 1));
+      }
     });
 
     on<PauseRecording>((event, emit) {
@@ -38,6 +44,30 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
       timer?.cancel();
       emit(state.copyWith(
           isRecording: false, isPaused: false, recordingDuration: 0));
+    });
+    on<SaveVoiceNote>((event, emit) async {
+      final id = DateTime.now().toIso8601String();
+      final filePath = 'path/to/recorded/file/$id.m4a';
+      final newNote = VoiceNote(
+        id: id,
+        title: event.title,
+        filePath: filePath,
+        recordedDate: DateTime.now(),
+      );
+      await repository.saveVoiceNote(newNote);
+      final updatedNotes = await repository.fetchVoiceNotes();
+      emit(state.copyWith(notes: updatedNotes));
+    });
+
+    on<DeleteVoiceNote>((event, emit) async {
+      await repository.deleteVoiceNote(event.id);
+      final updatedNotes = await repository.fetchVoiceNotes();
+      emit(state.copyWith(notes: updatedNotes));
+    });
+
+    on<FetchVoiceNotes>((event, emit) async {
+      final notes = await repository.fetchVoiceNotes();
+      emit(state.copyWith(notes: notes));
     });
   }
   @override
