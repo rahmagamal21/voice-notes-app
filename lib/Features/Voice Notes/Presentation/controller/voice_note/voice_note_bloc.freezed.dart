@@ -19,6 +19,7 @@ mixin _$VoiceNoteState {
   bool get isRecording => throw _privateConstructorUsedError;
   bool get isPaused => throw _privateConstructorUsedError;
   int get recordingDuration => throw _privateConstructorUsedError;
+  int get currentRecordingDuration => throw _privateConstructorUsedError;
   List<VoiceNote> get notes => throw _privateConstructorUsedError;
 
   /// Create a copy of VoiceNoteState
@@ -38,6 +39,7 @@ abstract class $VoiceNoteStateCopyWith<$Res> {
       {bool isRecording,
       bool isPaused,
       int recordingDuration,
+      int currentRecordingDuration,
       List<VoiceNote> notes});
 }
 
@@ -59,6 +61,7 @@ class _$VoiceNoteStateCopyWithImpl<$Res, $Val extends VoiceNoteState>
     Object? isRecording = null,
     Object? isPaused = null,
     Object? recordingDuration = null,
+    Object? currentRecordingDuration = null,
     Object? notes = null,
   }) {
     return _then(_value.copyWith(
@@ -73,6 +76,10 @@ class _$VoiceNoteStateCopyWithImpl<$Res, $Val extends VoiceNoteState>
       recordingDuration: null == recordingDuration
           ? _value.recordingDuration
           : recordingDuration // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentRecordingDuration: null == currentRecordingDuration
+          ? _value.currentRecordingDuration
+          : currentRecordingDuration // ignore: cast_nullable_to_non_nullable
               as int,
       notes: null == notes
           ? _value.notes
@@ -94,6 +101,7 @@ abstract class _$$VoiceNoteStateImplCopyWith<$Res>
       {bool isRecording,
       bool isPaused,
       int recordingDuration,
+      int currentRecordingDuration,
       List<VoiceNote> notes});
 }
 
@@ -113,6 +121,7 @@ class __$$VoiceNoteStateImplCopyWithImpl<$Res>
     Object? isRecording = null,
     Object? isPaused = null,
     Object? recordingDuration = null,
+    Object? currentRecordingDuration = null,
     Object? notes = null,
   }) {
     return _then(_$VoiceNoteStateImpl(
@@ -127,6 +136,10 @@ class __$$VoiceNoteStateImplCopyWithImpl<$Res>
       recordingDuration: null == recordingDuration
           ? _value.recordingDuration
           : recordingDuration // ignore: cast_nullable_to_non_nullable
+              as int,
+      currentRecordingDuration: null == currentRecordingDuration
+          ? _value.currentRecordingDuration
+          : currentRecordingDuration // ignore: cast_nullable_to_non_nullable
               as int,
       notes: null == notes
           ? _value._notes
@@ -143,6 +156,7 @@ class _$VoiceNoteStateImpl implements _VoiceNoteState {
       {required this.isRecording,
       required this.isPaused,
       required this.recordingDuration,
+      required this.currentRecordingDuration,
       required final List<VoiceNote> notes})
       : _notes = notes;
 
@@ -152,6 +166,8 @@ class _$VoiceNoteStateImpl implements _VoiceNoteState {
   final bool isPaused;
   @override
   final int recordingDuration;
+  @override
+  final int currentRecordingDuration;
   final List<VoiceNote> _notes;
   @override
   List<VoiceNote> get notes {
@@ -162,7 +178,7 @@ class _$VoiceNoteStateImpl implements _VoiceNoteState {
 
   @override
   String toString() {
-    return 'VoiceNoteState(isRecording: $isRecording, isPaused: $isPaused, recordingDuration: $recordingDuration, notes: $notes)';
+    return 'VoiceNoteState(isRecording: $isRecording, isPaused: $isPaused, recordingDuration: $recordingDuration, currentRecordingDuration: $currentRecordingDuration, notes: $notes)';
   }
 
   @override
@@ -176,12 +192,20 @@ class _$VoiceNoteStateImpl implements _VoiceNoteState {
                 other.isPaused == isPaused) &&
             (identical(other.recordingDuration, recordingDuration) ||
                 other.recordingDuration == recordingDuration) &&
+            (identical(
+                    other.currentRecordingDuration, currentRecordingDuration) ||
+                other.currentRecordingDuration == currentRecordingDuration) &&
             const DeepCollectionEquality().equals(other._notes, _notes));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isRecording, isPaused,
-      recordingDuration, const DeepCollectionEquality().hash(_notes));
+  int get hashCode => Object.hash(
+      runtimeType,
+      isRecording,
+      isPaused,
+      recordingDuration,
+      currentRecordingDuration,
+      const DeepCollectionEquality().hash(_notes));
 
   /// Create a copy of VoiceNoteState
   /// with the given fields replaced by the non-null parameter values.
@@ -198,6 +222,7 @@ abstract class _VoiceNoteState implements VoiceNoteState {
       {required final bool isRecording,
       required final bool isPaused,
       required final int recordingDuration,
+      required final int currentRecordingDuration,
       required final List<VoiceNote> notes}) = _$VoiceNoteStateImpl;
 
   @override
@@ -206,6 +231,8 @@ abstract class _VoiceNoteState implements VoiceNoteState {
   bool get isPaused;
   @override
   int get recordingDuration;
+  @override
+  int get currentRecordingDuration;
   @override
   List<VoiceNote> get notes;
 

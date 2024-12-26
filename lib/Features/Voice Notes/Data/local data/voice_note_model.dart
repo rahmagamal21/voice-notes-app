@@ -16,10 +16,14 @@ class VoiceNoteHive {
   @HiveField(3)
   final DateTime recordedDate;
 
+  @HiveField(4)
+  final int duration;
+
   VoiceNoteHive({
     required this.id,
     required this.title,
     required this.filePath,
     required this.recordedDate,
+    required this.duration,
   });
 }

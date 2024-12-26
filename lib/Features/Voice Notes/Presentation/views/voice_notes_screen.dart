@@ -39,6 +39,7 @@ class VoiceNotesScreen extends StatelessWidget {
                   return NotesListItem(
                     title: note.title,
                     date: note.recordedDate.toLocal().toString(),
+                    duration: note.duration,
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {

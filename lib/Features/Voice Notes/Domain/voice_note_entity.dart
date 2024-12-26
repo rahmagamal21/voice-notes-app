@@ -3,11 +3,13 @@ class VoiceNote {
   final String title;
   final String filePath;
   final DateTime recordedDate;
+  final int duration;
 
   VoiceNote({
     required this.id,
     required this.title,
     required this.filePath,
     required this.recordedDate,
+    required this.duration,
   });
 }

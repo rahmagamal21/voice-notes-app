@@ -14,8 +14,8 @@ class BottomSheetContent extends StatelessWidget {
 
     return BlocBuilder<VoiceNoteBloc, VoiceNoteState>(
       builder: (context, state) {
-        final minutes = state.recordingDuration ~/ 60;
-        final seconds = state.recordingDuration % 60;
+        final minutes = state.currentRecordingDuration ~/ 60;
+        final seconds = state.currentRecordingDuration % 60;
 
         return Container(
           padding: const EdgeInsets.all(16),
@@ -33,12 +33,15 @@ class BottomSheetContent extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Expanded(
-                child: AudioWaveforms(
-                  size: Size(MediaQuery.of(context).size.width, 100.0),
-                  recorderController: bloc.recorderController,
-                  waveStyle: const WaveStyle(
-                    waveColor: Colors.pink,
-                    extendWaveform: true,
+                child: Center(
+                  child: AudioWaveforms(
+                    size: Size(MediaQuery.of(context).size.width, 100.0),
+                    recorderController: bloc.recorderController,
+                    waveStyle: const WaveStyle(
+                      waveColor: Colors.pink,
+                      extendWaveform: true,
+                      showMiddleLine: false,
+                    ),
                   ),
                 ),
               ),

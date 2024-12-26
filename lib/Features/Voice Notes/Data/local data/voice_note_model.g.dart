@@ -21,13 +21,14 @@ class VoiceNoteHiveAdapter extends TypeAdapter<VoiceNoteHive> {
       title: fields[1] as String,
       filePath: fields[2] as String,
       recordedDate: fields[3] as DateTime,
+      duration: fields[4] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, VoiceNoteHive obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class VoiceNoteHiveAdapter extends TypeAdapter<VoiceNoteHive> {
       ..writeByte(2)
       ..write(obj.filePath)
       ..writeByte(3)
-      ..write(obj.recordedDate);
+      ..write(obj.recordedDate)
+      ..writeByte(4)
+      ..write(obj.duration);
   }
 
   @override

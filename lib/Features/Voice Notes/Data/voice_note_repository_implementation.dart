@@ -16,6 +16,7 @@ class HiveVoiceNoteRepository implements VoiceNoteRepository {
       title: voiceNote.title,
       filePath: voiceNote.filePath,
       recordedDate: voiceNote.recordedDate,
+      duration: voiceNote.duration,
     );
     await voiceNoteBox.put(note.id, note);
   }
@@ -33,6 +34,7 @@ class HiveVoiceNoteRepository implements VoiceNoteRepository {
         title: note.title,
         filePath: note.filePath,
         recordedDate: note.recordedDate,
+        duration: note.duration,
       );
     }).toList();
   }

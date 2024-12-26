@@ -19,14 +19,15 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
     on<StartRecording>((event, emit) {
       recorderController.reset();
       recorderController.record();
-      emit(state.copyWith(isRecording: true, recordingDuration: 0));
+      emit(state.copyWith(isRecording: true, currentRecordingDuration: 0));
       timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         add(const UpdateDuration());
       });
     });
     on<UpdateDuration>((event, emit) {
       if (!state.isPaused) {
-        emit(state.copyWith(recordingDuration: state.recordingDuration + 1));
+        emit(state.copyWith(
+            currentRecordingDuration: state.currentRecordingDuration + 1));
       }
     });
 
@@ -43,16 +44,22 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
       recorderController.stop();
       timer?.cancel();
       emit(state.copyWith(
-          isRecording: false, isPaused: false, recordingDuration: 0));
+        isRecording: false,
+        isPaused: false,
+        recordingDuration: state.currentRecordingDuration,
+        currentRecordingDuration: 0,
+      ));
     });
     on<SaveVoiceNote>((event, emit) async {
       final id = DateTime.now().toIso8601String();
       final filePath = 'path/to/recorded/file/$id.m4a';
+
       final newNote = VoiceNote(
         id: id,
         title: event.title,
         filePath: filePath,
         recordedDate: DateTime.now(),
+        duration: state.recordingDuration,
       );
       await repository.saveVoiceNote(newNote);
       final updatedNotes = await repository.fetchVoiceNotes();
