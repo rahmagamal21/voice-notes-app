@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
         designSize: const Size(393, 830),
         builder: (context, child) {
           return BlocProvider(
-            create: (context) => VoiceNoteBloc(repository),
+            create: (context) =>
+                VoiceNoteBloc(repository)..add(const FetchVoiceNotes()),
             child: const MaterialApp(
               debugShowCheckedModeBanner: false,
               home: VoiceNotesScreen(),
