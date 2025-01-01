@@ -7,6 +7,8 @@ class VoiceNoteEvent with _$VoiceNoteEvent {
   const factory VoiceNoteEvent.stopRecording() = StopRecording;
   const factory VoiceNoteEvent.updateDuration() = UpdateDuration;
   const factory VoiceNoteEvent.saveVoiceNote(String title) = SaveVoiceNote;
+  const factory VoiceNoteEvent.playVoiceNote(String id) = PlayVoiceNote;
+  const factory VoiceNoteEvent.pauseVoiceNote(String id) = PauseVoiceNote;
   const factory VoiceNoteEvent.deleteVoiceNote(String id) = DeleteVoiceNote;
   const factory VoiceNoteEvent.fetchVoiceNotes() = FetchVoiceNotes;
 }

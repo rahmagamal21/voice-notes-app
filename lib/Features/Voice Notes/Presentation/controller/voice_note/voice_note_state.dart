@@ -7,6 +7,7 @@ class VoiceNoteState with _$VoiceNoteState {
     required bool isPaused,
     required int recordingDuration,
     required int currentRecordingDuration,
+    String? lastRecordedFilePath,
     required List<VoiceNote> notes,
   }) = _VoiceNoteState;
 

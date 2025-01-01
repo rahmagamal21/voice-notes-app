@@ -37,9 +37,22 @@ class VoiceNotesScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final note = notes[index];
                   return NotesListItem(
-                    title: note.title,
-                    date: note.recordedDate.toLocal().toString(),
-                    duration: note.duration,
+                    note: note,
+                    onPlay: () {
+                      context
+                          .read<VoiceNoteBloc>()
+                          .add(VoiceNoteEvent.playVoiceNote(note.id));
+                    },
+                    onPause: () {
+                      context
+                          .read<VoiceNoteBloc>()
+                          .add(VoiceNoteEvent.pauseVoiceNote(note.id));
+                    },
+                    onDelete: () {
+                      context
+                          .read<VoiceNoteBloc>()
+                          .add(VoiceNoteEvent.deleteVoiceNote(note.id));
+                    },
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
