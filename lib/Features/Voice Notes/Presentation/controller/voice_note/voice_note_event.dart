@@ -11,4 +11,5 @@ class VoiceNoteEvent with _$VoiceNoteEvent {
   const factory VoiceNoteEvent.pauseVoiceNote(String id) = PauseVoiceNote;
   const factory VoiceNoteEvent.deleteVoiceNote(String id) = DeleteVoiceNote;
   const factory VoiceNoteEvent.fetchVoiceNotes() = FetchVoiceNotes;
+  const factory VoiceNoteEvent.searchNotes(String query) = SearchNotes;
 }

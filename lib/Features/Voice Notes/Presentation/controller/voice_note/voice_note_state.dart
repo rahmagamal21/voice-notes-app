@@ -9,6 +9,7 @@ class VoiceNoteState with _$VoiceNoteState {
     required int currentRecordingDuration,
     String? lastRecordedFilePath,
     required List<VoiceNote> notes,
+    required List<VoiceNote> filteredNotes,
   }) = _VoiceNoteState;
 
   factory VoiceNoteState.initial() => const VoiceNoteState(
@@ -17,5 +18,6 @@ class VoiceNoteState with _$VoiceNoteState {
         recordingDuration: 0,
         currentRecordingDuration: 0,
         notes: [],
+        filteredNotes: [],
       );
 }

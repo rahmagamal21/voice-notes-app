@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:just_audio/just_audio.dart';
@@ -17,10 +18,14 @@ part 'voice_note_bloc.freezed.dart';
 
 class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
   final RecorderController recorderController = RecorderController();
+  final TextEditingController searchController = TextEditingController();
   final VoiceNoteRepository repository;
   Timer? timer;
 
   VoiceNoteBloc(this.repository) : super(VoiceNoteState.initial()) {
+    searchController.addListener(() {
+      add(SearchNotes(searchController.text));
+    });
     on<StartRecording>((event, emit) async {
       recorderController.reset();
       Directory appDir = await getApplicationDocumentsDirectory();
@@ -139,6 +144,16 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
     on<FetchVoiceNotes>((event, emit) async {
       final notes = await repository.fetchVoiceNotes();
       emit(state.copyWith(notes: notes));
+    });
+    on<SearchNotes>((event, emit) {
+      final query = event.query.toLowerCase();
+      final filteredNotes = state.notes
+          .where((note) =>
+              note.title.toLowerCase().contains(query) ||
+              note.recordedDate.toString().contains(query))
+          .toList();
+
+      emit(state.copyWith(filteredNotes: filteredNotes));
     });
   }
   @override
