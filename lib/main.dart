@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:voice_notes_app/Features/Voice%20Notes/Presentation/views/voice_notes_screen.dart';
+import 'package:voice_notes_app/Features/Voice%20Notes/Presentation/views/start_screen.dart';
 
 import 'Features/Voice Notes/Data/local data/voice_note_model.dart';
 import 'Features/Voice Notes/Data/voice_note_repository_implementation.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
                 VoiceNoteBloc(repository)..add(const FetchVoiceNotes()),
             child: const MaterialApp(
               debugShowCheckedModeBanner: false,
-              home: VoiceNotesScreen(),
+              home: StartScreen(),
             ),
           );
         });

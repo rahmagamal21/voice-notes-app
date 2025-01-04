@@ -7,13 +7,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:voice_notes_app/Features/Voice%20Notes/Data/local%20data/voice_note_model.dart';
+import 'package:voice_notes_app/Features/Voice%20Notes/Data/voice_note_repository_implementation.dart';
 
 import 'package:voice_notes_app/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    final notesBox = await Hive.openBox<VoiceNoteHive>('voice_notes');
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(
+      MyApp(
+        repository: HiveVoiceNoteRepository(notesBox),
+      ),
+    );
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
