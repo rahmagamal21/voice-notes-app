@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:voice_notes_app/Features/Voice%20Notes/Presentation/views/widgets/notes_list_item.dart';
 
+import '../../../../core/src/all_colors.dart';
 import '../controller/voice_note/voice_note_bloc.dart';
 import 'widgets/bottom_sheet.dart';
 
@@ -18,7 +19,10 @@ class VoiceNotesScreen extends StatelessWidget {
           title: const Text(
             'My Notes',
             style: TextStyle(
-                color: Color(0xff212121), fontWeight: FontWeight.bold),
+              color: Color(0xffed82e6), //Color(0xff212121),
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+            ),
           ),
           elevation: 0,
           backgroundColor: Colors.white,
@@ -53,6 +57,7 @@ class VoiceNotesScreen extends StatelessWidget {
                           .read<VoiceNoteBloc>()
                           .add(VoiceNoteEvent.deleteVoiceNote(note.id));
                     },
+                    colors: gradients[index % gradients.length],
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
@@ -79,11 +84,15 @@ class VoiceNotesScreen extends StatelessWidget {
               builder: (_) => const BottomSheetContent(),
             );
           },
-          backgroundColor: const Color(0xffF48FB1),
+          backgroundColor: const Color(0xffed82e6), //Color(0xffF48FB1),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
-          child: const Icon(Icons.mic, size: 28),
+          child: const Icon(
+            Icons.mic,
+            size: 28,
+            color: Colors.white,
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),

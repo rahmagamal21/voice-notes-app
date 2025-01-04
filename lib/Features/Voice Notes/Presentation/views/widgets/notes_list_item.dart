@@ -11,12 +11,14 @@ class NotesListItem extends StatelessWidget {
     required this.onPlay,
     required this.onPause,
     required this.onDelete,
+    required this.colors,
   });
 
   final VoiceNote note;
   final VoidCallback onPlay;
   final VoidCallback onPause;
   final VoidCallback onDelete;
+  final List<Color> colors;
 
   String formatDuration(int seconds) {
     final hours = seconds ~/ 3600;
@@ -30,74 +32,111 @@ class NotesListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //DateTime newDate = DateTime.parse(note);
     DateFormat dateFormat = DateFormat('dd/MM/yyyy');
     String formattedDate = dateFormat.format(note.recordedDate);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w),
-      child: Column(
-        children: [
-          Row(
+      child: Material(
+        elevation: 3,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          padding: const EdgeInsets.all(16),
+          child: Column(
             children: [
-              CircleAvatar(
-                backgroundColor: Colors.blue.shade100,
-                child: const Icon(Icons.mic, color: Colors.blue),
+              Row(
+                children: [
+                  // CircleAvatar(
+                  //   backgroundColor: Colors.blue.shade100,
+                  //   child:
+                  //       const Icon(Icons.graphic_eq_rounded, color: Colors.white),
+                  // ),
+                  Container(
+                    width: 50.w,
+                    height: 50.w,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: colors,
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Center(
+                      child:
+                          Icon(Icons.graphic_eq_rounded, color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          note.title,
+                          overflow: TextOverflow.fade,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          formattedDate,
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 124, 123, 123),
+                          ),
+                        ),
+                        Text(
+                          formatDuration(note.duration),
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      note.isPlaying
+                          ? Icons.pause
+                          : Icons.play_circle_fill_rounded,
+                      size: 32,
+                      color: const Color(0xff82e6ed),
+                    ),
+                    onPressed: note.isPlaying ? onPause : onPlay,
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Color.fromARGB(255, 204, 18, 5),
+                    ),
+                    onPressed: onDelete,
+                  ),
+                ],
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      note.title,
-                      overflow: TextOverflow.fade,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(formattedDate),
-                    Text(
-                      formatDuration(note.duration),
-                    ),
-                  ],
+              if (note.isPlaying)
+                StreamBuilder<Duration>(
+                  stream: note.audioPlayer.positionStream,
+                  builder: (context, snapshot) {
+                    final position = snapshot.data ?? Duration.zero;
+                    final totalDuration =
+                        note.audioPlayer.duration ?? Duration.zero;
+                    if (totalDuration == Duration.zero) {
+                      return const SizedBox.shrink();
+                    }
+                    final progress =
+                        position.inMilliseconds / totalDuration.inMilliseconds;
+
+                    return LinearProgressIndicator(
+                      value: progress,
+                      color: const Color(0xffe648d6), //Color(0xffCE93D8),
+                      backgroundColor: Colors.grey.shade300,
+                      minHeight: 4,
+                      borderRadius: BorderRadius.circular(8),
+                    );
+                  },
                 ),
-              ),
-              IconButton(
-                icon: Icon(
-                    note.isPlaying
-                        ? Icons.pause
-                        : Icons.play_circle_fill_rounded,
-                    size: 32,
-                    color: const Color(0xff1E88E5)),
-                onPressed: note.isPlaying ? onPause : onPlay,
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red),
-                onPressed: onDelete,
-              ),
             ],
           ),
-          if (note.isPlaying)
-            StreamBuilder<Duration>(
-              stream: note.audioPlayer.positionStream,
-              builder: (context, snapshot) {
-                final position = snapshot.data ?? Duration.zero;
-                final totalDuration =
-                    note.audioPlayer.duration ?? Duration.zero;
-                if (totalDuration == Duration.zero) {
-                  return const SizedBox.shrink();
-                }
-                final progress =
-                    position.inMilliseconds / totalDuration.inMilliseconds;
-
-                return LinearProgressIndicator(
-                  value: progress,
-                  color: const Color(0xffCE93D8),
-                  backgroundColor: Colors.grey.shade300,
-                  minHeight: 4,
-                  borderRadius: BorderRadius.circular(8),
-                );
-              },
-            ),
-        ],
+        ),
       ),
     );
   }

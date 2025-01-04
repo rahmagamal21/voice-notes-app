@@ -52,10 +52,17 @@ class BottomSheetContent extends StatelessWidget {
                     onPressed: state.isRecording
                         ? () => bloc.add(const PauseRecording())
                         : null,
-                    icon: Icon(state.isPaused ? Icons.play_arrow : Icons.pause),
-                    label: Text(state.isPaused ? 'Resume' : 'Pause'),
+                    icon: Icon(
+                      state.isPaused ? Icons.play_arrow : Icons.pause,
+                      color: Colors.white,
+                    ),
+                    label: Text(
+                      state.isPaused ? 'Resume' : 'Pause',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xffCE93D8),
+                      backgroundColor:
+                          const Color(0xff82e6ed), //const Color(0xffCE93D8),
                     ),
                   ),
                   ElevatedButton.icon(
@@ -74,8 +81,14 @@ class BottomSheetContent extends StatelessWidget {
                             );
                           }
                         : null,
-                    icon: const Icon(Icons.stop),
-                    label: const Text('Stop'),
+                    icon: const Icon(
+                      Icons.stop,
+                      color: Colors.white,
+                    ),
+                    label: const Text(
+                      'Stop',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
