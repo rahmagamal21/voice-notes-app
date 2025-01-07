@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,13 +27,12 @@ class VoiceNotesScreen extends StatelessWidget {
             ),
           ),
           elevation: 0,
+          scrolledUnderElevation: 0,
           backgroundColor: Colors.white,
           centerTitle: true,
           toolbarHeight: 100.h,
         ),
-        body: ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
+        body: Column(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -40,11 +41,11 @@ class VoiceNotesScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 child: TextField(
                   controller: context.read<VoiceNoteBloc>().searchController,
-                  // onChanged: (query) {
-                  //   context
-                  //       .read<VoiceNoteBloc>()
-                  //       .add(VoiceNoteEvent.searchNotes(query));
-                  // },
+                  onChanged: (query) {
+                    context
+                        .read<VoiceNoteBloc>()
+                        .add(VoiceNoteEvent.searchNotes(query));
+                  },
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     filled: true,
@@ -79,40 +80,48 @@ class VoiceNotesScreen extends StatelessWidget {
                     child: Text('Your Notes appears here!'),
                   );
                 } else {
-                  return ListView.separated(
-                    itemBuilder: (context, index) {
-                      final note = notes[index];
-                      return NotesListItem(
-                        note: note,
-                        onPlay: () {
-                          context
-                              .read<VoiceNoteBloc>()
-                              .add(VoiceNoteEvent.playVoiceNote(note.id));
-                        },
-                        onPause: () {
-                          context
-                              .read<VoiceNoteBloc>()
-                              .add(VoiceNoteEvent.pauseVoiceNote(note.id));
-                        },
-                        onDelete: () {
-                          context
-                              .read<VoiceNoteBloc>()
-                              .add(VoiceNoteEvent.deleteVoiceNote(note.id));
-                        },
-                        colors: gradients[index % gradients.length],
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 15.h,
-                      );
-                    },
-                    itemCount: notes.length,
-                    reverse: true,
-                    shrinkWrap: true,
+                  return Flexible(
+                    child: ListView.separated(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final note = notes[index];
+                        return NotesListItem(
+                          note: note,
+                          onPlay: () {
+                            context
+                                .read<VoiceNoteBloc>()
+                                .add(VoiceNoteEvent.playVoiceNote(note.id));
+                            log('${note.isPlaying}');
+                          },
+                          onPause: () {
+                            context
+                                .read<VoiceNoteBloc>()
+                                .add(VoiceNoteEvent.pauseVoiceNote(note.id));
+                          },
+                          onDelete: () {
+                            context
+                                .read<VoiceNoteBloc>()
+                                .add(VoiceNoteEvent.deleteVoiceNote(note.id));
+                          },
+                          colors: gradients[index % gradients.length],
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return SizedBox(
+                          height: 15.h,
+                        );
+                      },
+                      itemCount: notes.length,
+                      reverse: true,
+                      shrinkWrap: true,
+                      //clipBehavior: Clip.none,
+                    ),
                   );
                 }
               },
+            ),
+            SizedBox(
+              height: 15.h,
             ),
           ],
         ),

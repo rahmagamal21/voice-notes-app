@@ -112,6 +112,9 @@ class NotesListItem extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 5.h,
+              ),
               if (note.isPlaying)
                 StreamBuilder<Duration>(
                   stream: note.audioPlayer.positionStream,

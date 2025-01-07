@@ -23,9 +23,9 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
   Timer? timer;
 
   VoiceNoteBloc(this.repository) : super(VoiceNoteState.initial()) {
-    searchController.addListener(() {
-      add(SearchNotes(searchController.text));
-    });
+    // searchController.addListener(() {
+    //   add(SearchNotes(searchController.text));
+    // });
     on<StartRecording>((event, emit) async {
       recorderController.reset();
       Directory appDir = await getApplicationDocumentsDirectory();
@@ -85,6 +85,12 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
       final updatedNotes = await repository.fetchVoiceNotes();
       emit(state.copyWith(notes: updatedNotes));
     });
+    List<VoiceNote> filterNotes(String query, List<VoiceNote> notes) {
+      if (query.isEmpty) {
+        return notes;
+      }
+      return notes.where((note) => note.title.contains(query)).toList();
+    }
 
     on<PlayVoiceNote>((event, emit) async {
       for (var note in state.notes) {
@@ -100,8 +106,11 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
         }
       }).toList();
 
-      emit(state.copyWith(notes: updatedNotes));
+      emit(state.copyWith(
+          notes: updatedNotes,
+          filteredNotes: filterNotes(searchController.text, updatedNotes)));
       final note = updatedNotes.firstWhere((note) => note.id == event.id);
+
       final file = File(note.filePath);
       if (!await file.exists()) {
         log("Error: File does not exist at ${note.filePath}");
@@ -111,6 +120,8 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
       try {
         await note.audioPlayer.setFilePath(note.filePath);
         note.audioPlayer.play();
+
+        //note.audioPlayer.playerStateStream.listen(null).cancel();
 
         note.audioPlayer.playerStateStream.listen((state) {
           if (state.processingState == ProcessingState.completed) {
@@ -131,14 +142,28 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
         }
         return note;
       }).toList();
+      final updatedFilteredNotes = state.filteredNotes.map((note) {
+        if (note.id == event.id) {
+          note.audioPlayer.pause();
+          return note.copyWith(isPlaying: false);
+        }
+        return note;
+      }).toList();
 
-      emit(state.copyWith(notes: updatedNotes));
+      emit(state.copyWith(
+          notes: updatedNotes, filteredNotes: updatedFilteredNotes));
     });
 
     on<DeleteVoiceNote>((event, emit) async {
       await repository.deleteVoiceNote(event.id);
       final updatedNotes = await repository.fetchVoiceNotes();
-      emit(state.copyWith(notes: updatedNotes));
+
+      final updatedFilteredNotes = List<VoiceNote>.from(state.filteredNotes)
+        ..removeWhere((note) => note.id == event.id);
+      emit(state.copyWith(
+        notes: updatedNotes,
+        filteredNotes: updatedFilteredNotes,
+      ));
     });
 
     on<FetchVoiceNotes>((event, emit) async {
@@ -146,12 +171,12 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
       emit(state.copyWith(notes: notes));
     });
     on<SearchNotes>((event, emit) {
-      final query = event.query.toLowerCase();
-      final filteredNotes = state.notes
-          .where((note) =>
-              note.title.toLowerCase().contains(query) ||
-              note.recordedDate.toString().contains(query))
-          .toList();
+      final filteredNotes = filterNotes(event.query, state.notes);
+      // final filteredNotes = state.notes
+      //     .where((note) =>
+      //         note.title.toLowerCase().contains(query) ||
+      //         note.recordedDate.toString().contains(query))
+      //     .toList();
 
       emit(state.copyWith(filteredNotes: filteredNotes));
     });
@@ -160,6 +185,7 @@ class VoiceNoteBloc extends Bloc<VoiceNoteEvent, VoiceNoteState> {
   Future<void> close() {
     timer?.cancel();
     recorderController.dispose();
+    searchController.dispose();
     return super.close();
   }
 }
